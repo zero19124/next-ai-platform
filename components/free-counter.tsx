@@ -9,7 +9,7 @@ import { TApiLimitCount } from "@/lib/api-limit";
 
 export const FreeCounter = ({
   isPro = false,
-  apiLimitCount,
+  apiLimitCount = { count: 1, maxFreeCount: 1 },
 }: {
   isPro: boolean;
   apiLimitCount: TApiLimitCount;

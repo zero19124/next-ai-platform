@@ -6,7 +6,7 @@ import { stripe } from "@/lib/stripe";
 import { absoluteUrl } from "@/lib/utils";
 
 const settingsUrl = absoluteUrl("/settings");
-const topUpUrl = absoluteUrl("/");
+const topUpUrl = absoluteUrl("/dashboard");
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
