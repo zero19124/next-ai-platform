@@ -25,6 +25,7 @@ export const ProModal = () => {
   const [loading, setLoading] = useState(false);
 
   const onSubscribe = async () => {
+    console.log('onSubscribe upgrade btn');
     try {
       setLoading(true);
       const response = await axios.get("/api/stripe");

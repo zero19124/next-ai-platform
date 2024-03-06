@@ -11,24 +11,24 @@ export async function GET() {
   try {
     const { userId } = auth();
     const user = await currentUser();
-
+    console.log(user, "user-strip-api");
     if (!userId || !user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const userSubscription = await prismadb.userSubscription.findUnique({
       where: {
-        userId
-      }
-    })
+        userId,
+      },
+    });
 
     if (userSubscription && userSubscription.stripeCustomerId) {
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: userSubscription.stripeCustomerId,
         return_url: settingsUrl,
-      })
+      });
 
-      return new NextResponse(JSON.stringify({ url: stripeSession.url }))
+      return new NextResponse(JSON.stringify({ url: stripeSession.url }));
     }
 
     const stripeSession = await stripe.checkout.sessions.create({
@@ -44,12 +44,12 @@ export async function GET() {
             currency: "USD",
             product_data: {
               name: "Genius Pro",
-              description: "Unlimited AI Generations"
+              description: "Unlimited AI Generations",
             },
             unit_amount: 2000,
             recurring: {
-              interval: "month"
-            }
+              interval: "month",
+            },
           },
           quantity: 1,
         },
@@ -57,11 +57,11 @@ export async function GET() {
       metadata: {
         userId,
       },
-    })
+    });
 
-    return new NextResponse(JSON.stringify({ url: stripeSession.url }))
+    return new NextResponse(JSON.stringify({ url: stripeSession.url }));
   } catch (error) {
     console.log("[STRIPE_ERROR]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
-};
+}

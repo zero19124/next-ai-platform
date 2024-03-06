@@ -15,27 +15,15 @@ export default function HomePage() {
   const { setToken, accessToken } = useTokenStore();
 
   useEffect(() => {
-    setToken('24.ead9ab262b78abf376dd4e98ba8f1b6c.2592000.1712313053.282335-55385369');
-
-    // if (!accessToken) {
-    //   axios
-    //     .get(
-    //       `
-    // https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=3kfh2BqO9Kp403O35PwDhZXC&client_secret=Jjk58pT6R2JIcrI3R0QnHGqGUFRWQRBA
-    // `
-    //     )
-    //     .then((res) => {
-    //       const access_token = res.data?.access_token;
-    //       console.log(res.data.access_token, "ressss");
-    //       setToken(access_token);
-    //       console.log(accessToken, "accessToken-28");
-    //     })
-    //     .catch(() => {
-    //       console.log(accessToken, "accessToken-error");
-    //     });
-    // } else {
-    //   console.log(accessToken, "accessToken-is");
-    // }
+    if (!accessToken) {
+      axios.get("/api/auth").then(({ data }) => {
+        console.log(data.token, "token");
+        setToken(data.token);
+        console.log(accessToken, "accessToken");
+      });
+    } else {
+      console.log(accessToken, "accessToken-is");
+    }
   }, []);
   return (
     <div>
