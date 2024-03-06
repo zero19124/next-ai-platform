@@ -6,6 +6,7 @@ import { stripe } from "@/lib/stripe";
 import { absoluteUrl } from "@/lib/utils";
 
 const settingsUrl = absoluteUrl("/settings");
+const topUpUrl = absoluteUrl("/");
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -28,8 +29,8 @@ export async function GET(req: Request) {
     }
     if (paymentType === "payment") {
       const session = await stripe.checkout.sessions.create({
-        success_url: settingsUrl,
-        cancel_url: settingsUrl,
+        success_url: topUpUrl,
+        cancel_url: topUpUrl,
         customer_email: user.emailAddresses[0].emailAddress,
         mode: "payment",
         line_items: [

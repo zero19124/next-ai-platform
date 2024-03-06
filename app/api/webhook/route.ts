@@ -23,9 +23,14 @@ export async function POST(req: Request) {
 
   const session = event.data.object as Stripe.Checkout.Session;
   const metadata = session?.metadata;
-  console.log(event.type, "webhook-25", event.data.object);
+  // console.log(event.type, "webhook-25", event.data.object);
 
   if (event.type === "checkout.session.completed") {
+    console.log(event.type, "webhook-25", event.data.object);
+    console.log("metadata", metadata, "metadata");
+    if (!metadata) {
+      console.log("metadata is null");
+    }
     if (metadata?.paymentType === "payment") {
       await prismadb.userApiLimit.update({
         where: {

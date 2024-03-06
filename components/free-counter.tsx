@@ -35,14 +35,12 @@ export const FreeCounter = ({
         <CardContent className="py-6">
           <div className="text-center text-sm text-white mb-4 space-y-2">
             <p>
-              {apiLimitCount.count} / {apiLimitCount.maxFreeCount} Free
+              {apiLimitCount?.count} / {apiLimitCount?.maxFreeCount} Free
               Generations
             </p>
             <Progress
               className="h-3"
-              value={
-                (apiLimitCount.maxFreeCount / apiLimitCount.maxFreeCount) * 100
-              }
+              value={(apiLimitCount?.count / apiLimitCount?.maxFreeCount) * 100}
             />
           </div>
           <Button
