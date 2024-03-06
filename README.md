@@ -67,6 +67,12 @@ npx prisma db push
 npm run dev
 ```
 
+
+### strip
+```shell
+stripe listen --forward-to localhost:3000/api/webhook
+```
+
 ## Available commands
 
 Running commands with npm `npm run [command]`

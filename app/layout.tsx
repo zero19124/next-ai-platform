@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+// import { Inter } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 
 import { ToasterProvider } from '@/components/toaster-provider'
@@ -8,7 +8,7 @@ import { CrispProvider } from '@/components/crisp-provider'
 
 import './globals.css'
 
-const font = Inter({ subsets: ['latin'] });
+// const font = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Genius',
@@ -24,7 +24,9 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <CrispProvider />
-        <body className={font.className}>
+        <body 
+        // className={font.className}
+        >
           <ToasterProvider />
           <ModalProvider />
           {children}
