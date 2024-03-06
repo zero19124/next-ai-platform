@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   try {
     const { userId } = auth();
     const body = await req.json();
-    console.log(body, "body-convo");
+    // console.log(body, "body-convo");
     const { messages, token } = body;
 
     if (!userId) {
