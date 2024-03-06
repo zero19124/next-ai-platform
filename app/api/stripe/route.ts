@@ -1,19 +1,56 @@
 import { auth, currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-
+import { redirect } from "next/navigation";
 import prismadb from "@/lib/prismadb";
 import { stripe } from "@/lib/stripe";
 import { absoluteUrl } from "@/lib/utils";
 
 const settingsUrl = absoluteUrl("/settings");
 
-export async function GET() {
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+
+  const paymentType = url.searchParams.get("paymentType") || "subscript";
+  console.log("paymentType", paymentType, url);
+
   try {
     const { userId } = auth();
     const user = await currentUser();
-    // console.log(user, "user-strip-api");
+    const transaction = {
+      amount: 1000,
+      plan: "top up 10 credits",
+      credits: 10,
+      buyerId: userId,
+    };
+    console.log(user?.username, "user-strip-api", userId);
     if (!userId || !user) {
       return new NextResponse("Unauthorized", { status: 401 });
+    }
+    if (paymentType === "payment") {
+      const session = await stripe.checkout.sessions.create({
+        success_url: settingsUrl,
+        cancel_url: settingsUrl,
+        customer_email: user.emailAddresses[0].emailAddress,
+        mode: "payment",
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              unit_amount: transaction.amount,
+              product_data: {
+                name: transaction.plan,
+              },
+            },
+            quantity: 1,
+          },
+        ],
+        metadata: {
+          ...transaction,
+          paymentType,
+        },
+      });
+
+      return new NextResponse(JSON.stringify({ url: session.url }));
     }
 
     const userSubscription = await prismadb.userSubscription.findUnique({

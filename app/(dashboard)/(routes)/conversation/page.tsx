@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { ChatCompletionRequestMessage } from "openai";
@@ -37,7 +37,6 @@ const ConversationPage = () => {
       prompt: "",
     },
   });
-
   const isLoading = form.formState.isSubmitting;
   console.log(accessToken, "accessToke-convo");
 
@@ -63,7 +62,7 @@ const ConversationPage = () => {
       if (error?.response?.status === 403) {
         proModal.onOpen();
       } else {
-        toast.error("Something went wrong.");
+        toast.error("Something went wrong.", error);
       }
     } finally {
       router.refresh();
@@ -115,7 +114,7 @@ const ConversationPage = () => {
               <Button
                 className="col-span-12 lg:col-span-2 w-full"
                 type="submit"
-                disabled={isLoading}
+                disabled={!form.formState.isValid || isLoading}
                 size="icon"
               >
                 Generate
@@ -133,26 +132,31 @@ const ConversationPage = () => {
             <Empty label="No conversation started." />
           )}
 
-<div className="flex flex-col-reverse gap-y-4">
+          <div className="flex flex-col-reverse gap-y-4">
             {messages.map((message) => (
-              <div 
-                key={message.content} 
+              <div
+                key={message.content}
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                  message.role === "user" ? "bg-white border border-black/10" : "bg-muted",
+                  message.role === "user"
+                    ? "bg-white border border-black/10"
+                    : "bg-muted"
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <ReactMarkdown components={{
-                  pre: ({ node, ...props }) => (
-                    <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
-                      <pre {...props} />
-                    </div>
-                  ),
-                  code: ({ node, ...props }) => (
-                    <code className="bg-black/10 rounded-lg p-1" {...props} />
-                  )
-                }} className="text-sm overflow-hidden leading-7">
+                <ReactMarkdown
+                  components={{
+                    pre: ({ node, ...props }) => (
+                      <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
+                        <pre {...props} />
+                      </div>
+                    ),
+                    code: ({ node, ...props }) => (
+                      <code className="bg-black/10 rounded-lg p-1" {...props} />
+                    ),
+                  }}
+                  className="text-sm overflow-hidden leading-7"
+                >
                   {message.content || ""}
                 </ReactMarkdown>
               </div>

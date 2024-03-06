@@ -5,13 +5,13 @@ import { useState } from "react";
 import { Check, Zap } from "lucide-react";
 import { toast } from "react-hot-toast";
 
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   DialogDescription,
-  DialogFooter
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,8 +24,21 @@ export const ProModal = () => {
   const proModal = useProModal();
   const [loading, setLoading] = useState(false);
 
+  const onTopUp = async () => {
+    try {
+      setLoading(true);
+      console.log(111111);
+      const response = await axios.get("/api/stripe?paymentType=payment");
+      console.log(response, "response-onTopUp");
+      window.location.href = response.data.url;
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
   const onSubscribe = async () => {
-    console.log('onSubscribe upgrade btn');
+    console.log("onSubscribe upgrade btn");
     try {
       setLoading(true);
       const response = await axios.get("/api/stripe");
@@ -36,7 +49,7 @@ export const ProModal = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
@@ -52,14 +65,15 @@ export const ProModal = () => {
           </DialogTitle>
           <DialogDescription className="text-center pt-2 space-y-2 text-zinc-900 font-medium">
             {tools.map((tool) => (
-              <Card key={tool.href} className="p-3 border-black/5 flex items-center justify-between">
+              <Card
+                key={tool.href}
+                className="p-3 border-black/5 flex items-center justify-between"
+              >
                 <div className="flex items-center gap-x-4">
                   <div className={cn("p-2 w-fit rounded-md", tool.bgColor)}>
                     <tool.icon className={cn("w-6 h-6", tool.color)} />
                   </div>
-                  <div className="font-semibold text-sm">
-                    {tool.label}
-                  </div>
+                  <div className="font-semibold text-sm">{tool.label}</div>
                 </div>
                 <Check className="text-primary w-5 h-5" />
               </Card>
@@ -67,8 +81,24 @@ export const ProModal = () => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button disabled={loading} onClick={onSubscribe} size="lg" variant="premium" className="w-full">
+          <Button
+            disabled={loading}
+            onClick={onSubscribe}
+            size="lg"
+            variant="premium"
+            className="w-full"
+          >
             Upgrade
+            <Zap className="w-4 h-4 ml-2 fill-white" />
+          </Button>
+          <Button
+            disabled={loading}
+            onClick={onTopUp}
+            size="lg"
+            variant="premium2"
+            className="w-full mb-4"
+          >
+            Top Up credits
             <Zap className="w-4 h-4 ml-2 fill-white" />
           </Button>
         </DialogFooter>

@@ -2,29 +2,14 @@
 
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 import { tools } from "@/constants";
-import { useTokenStore } from "@/store/useTokenStore";
-import { useEffect } from "react";
 
 export default function HomePage() {
   const router = useRouter();
-  const { setToken, accessToken } = useTokenStore();
 
-  useEffect(() => {
-    if (!accessToken) {
-      axios.get("/api/auth").then(({ data }) => {
-        console.log(data.token, "token");
-        setToken(data.token);
-        console.log(accessToken, "accessToken");
-      });
-    } else {
-      console.log(accessToken, "accessToken-is");
-    }
-  }, []);
   return (
     <div>
       <div className="mb-8 space-y-4">

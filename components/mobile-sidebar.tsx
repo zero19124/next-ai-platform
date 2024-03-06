@@ -6,12 +6,13 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "@/components/sidebar";
+import { TApiLimitCount } from "@/lib/api-limit";
 
 export const MobileSidebar = ({
-  apiLimitCount = 0,
+  apiLimitCount ,
   isPro = false
 }: {
-  apiLimitCount: number;
+  apiLimitCount: TApiLimitCount;
   isPro: boolean;
 }) => {
   const [isMounted, setIsMounted] = useState(false);

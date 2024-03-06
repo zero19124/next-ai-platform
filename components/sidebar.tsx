@@ -13,7 +13,7 @@ import {
   VideoIcon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-
+import { TApiLimitCount } from "@/lib/api-limit";
 import { cn } from "@/lib/utils";
 import { FreeCounter } from "@/components/free-counter";
 
@@ -64,10 +64,10 @@ const routes = [
 ];
 
 export const Sidebar = ({
-  apiLimitCount = 0,
+  apiLimitCount,
   isPro = false,
 }: {
-  apiLimitCount: number;
+  apiLimitCount: TApiLimitCount;
   isPro: boolean;
 }) => {
   const pathname = usePathname();

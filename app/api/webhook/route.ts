@@ -22,8 +22,21 @@ export async function POST(req: Request) {
   }
 
   const session = event.data.object as Stripe.Checkout.Session;
-  console.log(event.type, "webhook-25");
+  const metadata = session?.metadata;
+  console.log(event.type, "webhook-25", event.data.object);
+
   if (event.type === "checkout.session.completed") {
+    if (metadata?.paymentType === "payment") {
+      await prismadb.userApiLimit.update({
+        where: {
+          userId: metadata.buyerId,
+        },
+        data: {
+          maxFreeCount: { increment: 5 },
+        },
+      });
+      return new NextResponse(null, { status: 200 });
+    }
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string
     );
@@ -46,8 +59,19 @@ export async function POST(req: Request) {
   }
 
   if (event.type === "invoice.payment_succeeded") {
+    if (metadata?.paymentType === "payment") {
+      return;
+    }
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string
+    );
+    console.log(
+      "payment_succeeded",
+      subscription.id,
+      "priceid",
+      subscription.items.data[0].price.id,
+      +"time",
+      subscription.current_period_end * 1000
     );
 
     await prismadb.userSubscription.update({

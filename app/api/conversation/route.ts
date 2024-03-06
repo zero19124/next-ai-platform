@@ -1,18 +1,11 @@
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-// import { Configuration, OpenAIApi } from "openai";
-
 import { checkSubscription } from "@/lib/subscription";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import axios from "axios";
-
-// const configuration = new Configuration({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
-
-// const openai = new OpenAIApi(configuration);
-
-export async function POST(req: Request) {
+import { env } from "process";
+import { redirect } from "next/navigation";
+export async function POST(req: Request, res: Response) {
   try {
     const { userId } = auth();
     const body = await req.json();
@@ -24,7 +17,8 @@ export async function POST(req: Request) {
     }
 
     if (!token) {
-      return new NextResponse("token not configured.", { status: 500 });
+      console.log("null token");
+      return redirect("/dashboard");
     }
 
     if (!messages) {
@@ -32,33 +26,38 @@ export async function POST(req: Request) {
     }
     console.log(1111111);
 
-    // const freeTrial = await checkApiLimit();
-    // const isPro = await checkSubscription();
+    const freeTrial = await checkApiLimit();
+    const isPro = await checkSubscription();
     console.log(22222222);
 
-    // if (!freeTrial && !isPro) {
-    //   return new NextResponse(
-    //     "Free trial has expired. Please upgrade to pro.",
-    //     { status: 403 }
-    //   );
-    // }
+    if (!freeTrial && !isPro) {
+      return new NextResponse(
+        "Free trial has expired. Please upgrade to pro.",
+        { status: 403 }
+      );
+    }
     console.log(3333333);
+    let response;
+    if (process.env.NODE_ENV === "production") {
+      response = await axios.post(
+        // "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie_speed?access_token=" +
+        //   token,
+        "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=" +
+          token,
+        {
+          messages,
+          disable_search: false,
+          enable_citation: false,
+        }
+      );
+    } else {
+      response = { data: { result: "mockssssss" } };
+    }
 
-    const response = await axios.post(
-      // "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie_speed?access_token=" +
-      //   token,
-      "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=" +
-      token,
-      {
-        messages,
-        disable_search: false,
-        enable_citation: false,
-      }
-    );
     console.log(response.data, "response");
-    // if (!isPro) {
-    //   await incrementApiLimit();
-    // }
+    if (!isPro) {
+      await incrementApiLimit();
+    }
 
     return NextResponse.json({
       role: "assistant",
