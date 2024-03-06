@@ -23,6 +23,7 @@ import { useProModal } from "@/hooks/use-pro-modal";
 
 import { formSchema } from "./constants";
 import { useTokenStore } from "@/store/useTokenStore";
+import ReactMarkdown from "react-markdown";
 
 const ConversationPage = () => {
   const router = useRouter();
@@ -131,7 +132,33 @@ const ConversationPage = () => {
           {messages.length === 0 && !isLoading && (
             <Empty label="No conversation started." />
           )}
-          <div className="flex flex-col-reverse gap-y-4">
+
+<div className="flex flex-col-reverse gap-y-4">
+            {messages.map((message) => (
+              <div 
+                key={message.content} 
+                className={cn(
+                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
+                  message.role === "user" ? "bg-white border border-black/10" : "bg-muted",
+                )}
+              >
+                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
+                <ReactMarkdown components={{
+                  pre: ({ node, ...props }) => (
+                    <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
+                      <pre {...props} />
+                    </div>
+                  ),
+                  code: ({ node, ...props }) => (
+                    <code className="bg-black/10 rounded-lg p-1" {...props} />
+                  )
+                }} className="text-sm overflow-hidden leading-7">
+                  {message.content || ""}
+                </ReactMarkdown>
+              </div>
+            ))}
+          </div>
+          {/* <div className="flex flex-col-reverse gap-y-4">
             {messages.map((message) => (
               <div
                 key={message.content}
@@ -146,7 +173,7 @@ const ConversationPage = () => {
                 <p className="text-sm">{message.content}</p>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -45,8 +45,10 @@ export async function POST(req: Request) {
     console.log(3333333);
 
     const response = await axios.post(
+      // "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie_speed?access_token=" +
+      //   token,
       "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=" +
-        token,
+      token,
       {
         messages,
         disable_search: false,

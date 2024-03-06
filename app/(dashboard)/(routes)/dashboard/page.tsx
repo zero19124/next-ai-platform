@@ -15,7 +15,7 @@ export default function HomePage() {
   const { setToken, accessToken } = useTokenStore();
 
   useEffect(() => {
-    setToken('24.57c2c463cf7f4d536b4ca29b859c281a.2592000.1712311086.282335-55385369');
+    setToken('24.ead9ab262b78abf376dd4e98ba8f1b6c.2592000.1712313053.282335-55385369');
 
     // if (!accessToken) {
     //   axios
