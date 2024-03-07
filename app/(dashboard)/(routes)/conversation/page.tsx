@@ -38,7 +38,7 @@ const ConversationPage = () => {
     },
   });
   const isLoading = form.formState.isSubmitting;
-  console.log(accessToken, "accessToke-convo");
+  // console.log(accessToken, "accessToke-convo");
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -51,7 +51,7 @@ const ConversationPage = () => {
         messages: newMessages,
         token: accessToken,
       });
-      console.log(response.data, "accessToke-convo-response");
+      // console.log(response.data, "accessToke-convo-response");
 
       setMessages((current) => [...current, userMessage, response.data]);
       setTimeout(() => {

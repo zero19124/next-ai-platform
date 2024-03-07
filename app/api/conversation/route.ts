@@ -38,7 +38,7 @@ export async function POST(req: Request, res: Response) {
     }
     console.log(3333333);
     let response;
-    if (process.env.NODE_ENV === "production") {
+    // if (process.env.NODE_ENV === "production") {
       response = await axios.post(
         // "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie_speed?access_token=" +
         //   token,
@@ -50,9 +50,9 @@ export async function POST(req: Request, res: Response) {
           enable_citation: false,
         }
       );
-    } else {
-      response = { data: { result: "mockssssss" } };
-    }
+    // } else {
+    //   response = { data: { result: "will u upgrade if i answer?" } };
+    // }
 
     console.log(response.data, "response");
     if (!isPro) {

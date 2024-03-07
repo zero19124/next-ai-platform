@@ -1,21 +1,20 @@
 ## Give it a star if u like it.
-
+https://next-ai-platform.onrender.com/
 ## Features:
 
+- Stripe monthly subscription
+- Stripe Top up credits
+- Free tier with API limiting
 - RealTime Customer Support
 - Tailwind design animations and effects
 - Full responsiveness
 - Clerk Authentication (Email, Google, 9+ Social Logins)
-- Client form validation and handling using react-hook-form
-- Server error handling using react-toast
-- Image Generation Tool (Open AI)
+- Code Generation Tool (Yiyan AI)
 - Video Generation Tool (Replicate AI)
-- Conversation Generation Tool (Open AI)
+- Conversation Generation Tool (Yiyan AI)
 - Music Generation Tool (Replicate AI)
 - Page loading state
-- Stripe monthly subscription
-- Top up credits
-- Free tier with API limiting
+
 
 ![Alt Text](public/ai-page-1.png)
 

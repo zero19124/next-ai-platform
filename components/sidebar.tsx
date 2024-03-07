@@ -16,6 +16,9 @@ import { usePathname } from "next/navigation";
 import { TApiLimitCount } from "@/lib/api-limit";
 import { cn } from "@/lib/utils";
 import { FreeCounter } from "@/components/free-counter";
+import { useTokenStore } from "@/store/useTokenStore";
+import { useEffect } from "react";
+import axios from "axios";
 
 // const poppins = Montserrat ({ weight: '600', subsets: ['latin'] });
 
@@ -71,7 +74,18 @@ export const Sidebar = ({
   isPro: boolean;
 }) => {
   const pathname = usePathname();
-
+  const { setToken, accessToken } = useTokenStore();
+  useEffect(() => {
+    if (!accessToken) {
+      axios.get("/api/auth").then(({ data }) => {
+        console.log(data.token, "token");
+        setToken(data.token);
+        console.log(accessToken, "accessToken");
+      });
+    } else {
+      console.log(accessToken, "accessToken-is");
+    }
+  }, []);
   return (
     <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white">
       <div className="px-3 py-2 flex-1">

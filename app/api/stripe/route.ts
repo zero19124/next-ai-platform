@@ -12,7 +12,6 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
 
   const paymentType = url.searchParams.get("paymentType") || "subscript";
-  console.log("paymentType", paymentType, url);
 
   try {
     const { userId } = auth();
@@ -23,7 +22,7 @@ export async function GET(req: Request) {
       credits: 10,
       buyerId: userId,
     };
-    console.log(user?.username, "user-strip-api", userId);
+    console.log(paymentType, "user-strip-api", userId);
     if (!userId || !user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
