@@ -1,4 +1,3 @@
-
 ## Give it a star if u like it.
 
 ## Features:
@@ -17,13 +16,12 @@
 - Stripe monthly subscription
 - Top up credits
 - Free tier with API limiting
- 
+
+![Alt Text](public/ai-page-1.png)
 
 ### Prerequisites
 
 **Node version 18.x.x**
-
-
 
 ### Install packages
 
@@ -55,7 +53,6 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 ### Setup Prisma
 
-
 ```shell
 npx prisma db push
 
@@ -67,7 +64,6 @@ npx prisma db push
 npm run dev
 ```
 
-
 ### strip
 
 ```shell
@@ -78,7 +74,8 @@ stripe listen --forward-to localhost:3000/api/webhook
 
 Running commands with npm `npm run [command]`
 
-| command         | description                              |
-| :-------------- | :--------------------------------------- |
-| `dev`           | Starts a development instance of the app |
+| command | description                              |
+| :------ | :--------------------------------------- |
+| `dev`   | Starts a development instance of the app |
+
 # next-ai-platform
