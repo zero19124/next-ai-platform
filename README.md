@@ -1,5 +1,8 @@
 ## Give it a star if u like it.
 https://next-ai-platform.onrender.com/
+
+demo video 👇
+https://www.youtube.com/watch?v=3rfHoSe_oMU
 ## Features:
 
 - Stripe monthly subscription
